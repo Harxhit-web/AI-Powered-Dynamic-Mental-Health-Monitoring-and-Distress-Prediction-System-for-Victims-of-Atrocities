@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, CalendarDays, Check, CheckCircle2, ChevronDown, Clock3, HeartPulse, Info, MessageCircle, MoreHorizontal, Phone, ShieldAlert, Sparkles, TrendingDown, TrendingUp } from "lucide-react";
+import { ArrowRight, CalendarDays, Check, Clock3, HeartPulse, Info, MessageCircle, MoreHorizontal, Phone, ShieldAlert, Sparkles, TrendingDown, TrendingUp } from "lucide-react";
 
 const initialTasks = [
   { id: 1, title: "Complete daily check-in", description: "How are you feeling right now?", tag: "5 min", due: "Today", tone: "indigo", done: false },
@@ -39,35 +39,135 @@ const Dashboard = () => {
 
   return <div className="space-y-6">
     <section className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-      <div><p className="mb-1 text-sm font-medium text-indigo-600">Monday, 8 September</p><h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Good morning, Aanya</h2><p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">A gentle overview of your care plan, progress, and the next small steps you can take today.</p></div>
-      <button onClick={() => setMessage("Your care team has been notified that you’d like to talk.")} className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700"><MessageCircle size={17}/> Message care team</button>
+      <div>
+        <p className="mb-1 text-sm font-medium text-indigo-600">Monday, 8 September</p>
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Good morning, Aanya</h2>
+        <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">A gentle overview of your care plan, progress, and the next small steps you can take today.</p>
+        </div>
+      <button onClick={() => setMessage("Your care team has been notified that you’d like to talk.")} className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700">
+        <MessageCircle size={17}/> Message care team</button>
     </section>
-    {message && <div className="flex items-center justify-between rounded-xl border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm text-indigo-800"><span>{message}</span><button onClick={() => setMessage("")} aria-label="Dismiss message" className="font-bold">×</button></div>}
+    {message && <div className="flex items-center justify-between rounded-xl border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm text-indigo-800">
+        <span>{message}</span>
+    <button onClick={() => setMessage("")} aria-label="Dismiss message" className="font-bold">×</button>
+    </div>}
 
     <section className="grid gap-5 xl:grid-cols-[1.45fr_1fr]">
       <article className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 p-6 text-white shadow-lg shadow-indigo-200 sm:p-7">
-        <div className="absolute -right-10 -top-12 h-52 w-52 rounded-full bg-white/10"/><div className="absolute -bottom-24 right-24 h-52 w-52 rounded-full border-[24px] border-white/10"/>
-        <div className="relative"><div className="flex flex-wrap items-center justify-between gap-3"><StatusBadge tone="emerald"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500"/> Care plan active</StatusBadge><button className="rounded-lg p-1.5 text-indigo-100 hover:bg-white/10" aria-label="More care plan options"><MoreHorizontal size={20}/></button></div>
-          <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-sm font-medium text-indigo-200">Your next focus</p><h3 className="mt-2 max-w-md text-xl font-semibold leading-7">Take a moment for today’s wellbeing check-in.</h3><button onClick={() => toggleTask(1)} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-indigo-700 transition hover:bg-indigo-50">Start check-in <ArrowRight size={16}/></button></div><div className="shrink-0 rounded-xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm"><p className="text-xs text-indigo-200">Plan progress</p><p className="mt-1 text-2xl font-bold">{completion}%</p><div className="mt-2 h-1.5 w-28 overflow-hidden rounded-full bg-white/20"><div className="h-full rounded-full bg-emerald-400 transition-all" style={{ width: `${completion}%` }}/></div></div></div>
-          <div className="mt-6 flex items-center gap-2 border-t border-white/15 pt-4 text-xs text-indigo-100"><ShieldAlert size={15}/><span>This is a self-care dashboard, not an emergency service.</span></div>
+        <div className="absolute -right-10 -top-12 h-52 w-52 rounded-full bg-white/10"/>
+        <div className="absolute -bottom-24 right-24 h-52 w-52 rounded-full border-[24px] border-white/10"/>
+        <div className="relative">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                <StatusBadge tone="emerald">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"/> Care plan active</StatusBadge>
+                    <button className="rounded-lg p-1.5 text-indigo-100 hover:bg-white/10" aria-label="More care plan options"><MoreHorizontal size={20}/></button>
+                    </div>
+          <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p className="text-sm font-medium text-indigo-200">Your next focus</p>
+                <h3 className="mt-2 max-w-md text-xl font-semibold leading-7">Take a moment for today’s wellbeing check-in.</h3>
+                <button onClick={() => toggleTask(1)} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-indigo-700 transition hover:bg-indigo-50">Start check-in <ArrowRight size={16}/></button>
+                </div>
+
+                <div className="shrink-0 rounded-xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <p className="text-xs text-indigo-200">Plan progress</p>
+
+                <p className="mt-1 text-2xl font-bold">{completion}%</p>
+
+                <div className="mt-2 h-1.5 w-28 overflow-hidden rounded-full bg-white/20">
+
+                <div className="h-full rounded-full bg-emerald-400 transition-all" style={{ width: `${completion}%` }}/></div>
+                </div></div>
+
+          <div className="mt-6 flex items-center gap-2 border-t border-white/15 pt-4 text-xs text-indigo-100"><ShieldAlert size={15}/>
+          <span>This is a self-care dashboard, not an emergency service.</span>
+          </div>
         </div>
       </article>
 
-      <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><div className="flex items-start justify-between"><div><p className="text-sm font-medium text-slate-500">Care profile</p><h3 className="mt-1 text-lg font-bold text-slate-900">Aanya Mehta</h3><p className="mt-1 text-sm text-slate-500">Member since May 2026</p></div><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-lg font-bold text-indigo-700">AM</div></div>
-        <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-slate-100 pt-5 text-sm"><div><dt className="text-slate-400">Care coordinator</dt><dd className="mt-1 font-medium text-slate-700">Dr. S. Kapoor</dd></div><div><dt className="text-slate-400">Preferred contact</dt><dd className="mt-1 font-medium text-slate-700">Secure message</dd></div><div><dt className="text-slate-400">Plan review</dt><dd className="mt-1 font-medium text-slate-700">18 Sep 2026</dd></div><div><dt className="text-slate-400">Support network</dt><dd className="mt-1 font-medium text-slate-700">3 contacts</dd></div></dl>
+      <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex items-start justify-between"><div>
+            <p className="text-sm font-medium text-slate-500">Care profile</p>
+            <h3 className="mt-1 text-lg font-bold text-slate-900">Aanya Mehta</h3>
+            <p className="mt-1 text-sm text-slate-500">Member since May 2026</p>
+            </div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-lg font-bold text-indigo-700">AM</div>
+            </div>
+        <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-slate-100 pt-5 text-sm">
+            <div>
+                <dt className="text-slate-400">Care coordinator</dt>
+                <dd className="mt-1 font-medium text-slate-700">Dr. S. Kapoor</dd>
+                </div>
+                <div>
+                    <dt className="text-slate-400">Preferred contact</dt>
+                    <dd className="mt-1 font-medium text-slate-700">Secure message</dd>
+                    </div>
+                    <div>
+                        <dt className="text-slate-400">Plan review</dt>
+                        <dd className="mt-1 font-medium text-slate-700">18 Sep 2026</dd>
+                    </div>
+                    <div>
+                        <dt className="text-slate-400">Support network</dt>
+                        <dd className="mt-1 font-medium text-slate-700">3 contacts</dd>
+                    </div>
+                </dl>
         <button className="mt-6 w-full rounded-xl border border-slate-200 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700">View full profile</button>
       </article>
     </section>
 
     <section className="grid gap-6 xl:grid-cols-[1.42fr_1fr]">
-      <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-sm font-medium text-slate-500">Today’s plan</p><h3 className="mt-1 text-xl font-bold text-slate-900">Small steps, at your pace</h3></div><span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">{completed} of {tasks.length} complete</span></div>
-        <div className="mt-5 divide-y divide-slate-100">{tasks.map((task) => <div key={task.id} className="flex gap-3 py-4 first:pt-0 last:pb-0"><button aria-label={`Mark ${task.title} ${task.done ? "incomplete" : "complete"}`} onClick={() => toggleTask(task.id)} className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition ${task.done ? "border-emerald-500 bg-emerald-500 text-white" : "border-slate-300 hover:border-indigo-500"}`}>{task.done && <Check size={14} strokeWidth={3}/>}</button><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-2"><h4 className={`text-sm font-semibold ${task.done ? "text-slate-400 line-through" : "text-slate-800"}`}>{task.title}</h4><span className={`rounded-md px-2 py-0.5 text-[11px] font-semibold ${task.tone === "amber" ? "bg-amber-50 text-amber-700" : task.tone === "violet" ? "bg-violet-50 text-violet-700" : "bg-indigo-50 text-indigo-700"}`}>{task.tag}</span></div><p className="mt-1 text-sm text-slate-500">{task.description}</p></div><span className="shrink-0 pt-1 text-xs font-medium text-slate-400">{task.due}</span></div>)}</div>
-        <button className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-800">Open care plan <ArrowRight size={15}/></button>
+      <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex flex-wrap items-start justify-between gap-3"><div>
+            <p className="text-sm font-medium text-slate-500">Today’s plan</p>
+            <h3 className="mt-1 text-xl font-bold text-slate-900">Small steps, at your pace</h3></div><span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">{completed} of {tasks.length} complete</span>
+            </div>
+        <div className="mt-5 divide-y divide-slate-100">{tasks.map((task) => <div key={task.id} className="flex gap-3 py-4 first:pt-0 last:pb-0">
+            <button aria-label={`Mark ${task.title} ${task.done ? "incomplete" : "complete"}`} onClick={() => toggleTask(task.id)} className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition ${task.done ? "border-emerald-500 bg-emerald-500 text-white" : "border-slate-300 hover:border-indigo-500"}`}>{task.done && <Check size={14} strokeWidth={3}/>}
+            </button>
+            <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                    <h4 className={`text-sm font-semibold ${task.done ? "text-slate-400 line-through" : "text-slate-800"}`}>{task.title}</h4>
+                    <span className={`rounded-md px-2 py-0.5 text-[11px] font-semibold ${task.tone === "amber" ? "bg-amber-50 text-amber-700" : task.tone === "violet" ? "bg-violet-50 text-violet-700" : "bg-indigo-50 text-indigo-700"}`}>{task.tag}</span>
+                    </div>
+                    <p className="mt-1 text-sm text-slate-500">{task.description}</p>
+                    </div>
+                    <span className="shrink-0 pt-1 text-xs font-medium text-slate-400">{task.due}</span></div>)}
+                    </div>
+        <button className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-800">Open care plan 
+            <ArrowRight size={15}/></button>
+
       </article>
 
-      <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"><div className="flex items-start justify-between"><div><p className="text-sm font-medium text-slate-500">Upcoming support</p><h3 className="mt-1 text-xl font-bold text-slate-900">Your schedule</h3></div><CalendarDays size={20} className="text-indigo-500"/></div>
-        <div className="mt-5 rounded-xl border border-indigo-100 bg-indigo-50/60 p-4"><div className="flex gap-3"><div className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-xl bg-white text-indigo-700 shadow-sm"><span className="text-[10px] font-bold uppercase">Sep</span><span className="text-base font-bold leading-4">10</span></div><div><p className="text-sm font-bold text-slate-800">Check-in with Dr. Kapoor</p><p className="mt-1 text-xs text-slate-500">Wednesday · 11:30 AM · Video visit</p><StatusBadge>Confirmed</StatusBadge></div></div></div>
-        <div className="mt-4 space-y-3"><div className="flex items-center gap-3 text-sm"><Clock3 size={17} className="text-slate-400"/><span className="flex-1 text-slate-600">Guided breathing session</span><span className="text-xs text-slate-400">Thu, 6:00 PM</span></div><div className="flex items-center gap-3 text-sm"><Phone size={17} className="text-slate-400"/><span className="flex-1 text-slate-600">Peer support call</span><span className="text-xs text-slate-400">Sat, 10:00 AM</span></div></div>
+      <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex items-start justify-between">
+            <div>
+                <p className="text-sm font-medium text-slate-500">Upcoming support
+                    </p>
+                    <h3 className="mt-1 text-xl font-bold text-slate-900">Your schedule</h3>
+                </div><CalendarDays size={20} className="text-indigo-500"/>
+                </div>
+        <div className="mt-5 rounded-xl border border-indigo-100 bg-indigo-50/60 p-4">
+        <div className="flex gap-3">
+            <div className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-xl bg-white text-indigo-700 shadow-sm">
+                <span className="text-[10px] font-bold uppercase">Sep</span>
+                <span className="text-base font-bold leading-4">10</span>
+                </div>
+                <div>
+                    <p className="text-sm font-bold text-slate-800">Check-in with Dr. Kapoor</p>
+                    <p className="mt-1 text-xs text-slate-500">Wednesday · 11:30 AM · Video visit</p>
+                    <StatusBadge>Confirmed</StatusBadge>
+                    </div>
+                    </div>
+                    </div>
+        <div className="mt-4 space-y-3">
+            <div className="flex items-center gap-3 text-sm">
+                <Clock3 size={17} className="text-slate-400"/><span className="flex-1 text-slate-600">Guided breathing session</span>
+                <span className="text-xs text-slate-400">Thu, 6:00 PM</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                    <Phone size={17} className="text-slate-400"/><span className="flex-1 text-slate-600">Peer support call</span>
+                    <span className="text-xs text-slate-400">Sat, 10:00 AM</span>
+                    </div></div>
         <button className="mt-6 w-full rounded-xl border border-slate-200 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">Manage appointments</button>
       </article>
     </section>

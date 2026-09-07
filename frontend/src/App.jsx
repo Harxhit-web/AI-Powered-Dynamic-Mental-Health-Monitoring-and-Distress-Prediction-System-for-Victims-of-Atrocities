@@ -1,6 +1,8 @@
 import Topbar from "./components/Topbar";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
@@ -8,7 +10,13 @@ function App() {
       <Sidebar />
       <div className="min-h-screen lg:ml-64">
         <Topbar />
-        <main className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-8"><Dashboard /></main>
+        <main className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-8">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
       </div>
     </div>
   );
