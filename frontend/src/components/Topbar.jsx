@@ -1,42 +1,18 @@
-import { Search, Bell, HelpCircle } from 'lucide-react';
-import { useState } from 'react';
+import { Bell, HelpCircle, Search, ShieldCheck } from "lucide-react";
 
-const Topbar = () => {
-    const [lastUpdated] = useState('05 Sep 2026, 21:40 IST');
-  return (
-       <header className="h-14 border-b border-border bg-muted flex items-center gap-4 px-6 shrink-0">
-      {/* Search */}
-      <div className="flex items-center gap-2 bg-secondary border border-border rounded-md px-3 py-1.5 w-72 group focus-within:border-primary transition-colors">
-        <Search size={14} className="text-muted-foreground shrink-0" />
-        <input
-          type="text"
-          placeholder="Search victim ID, case, district…"
-          className="bg-transparent text-sm text-foreground placeholder-muted-foreground outline-none w-full"
-        />
-        <span className="text-[10px] text-muted-foreground border border-border rounded px-1 shrink-0">⌘K</span>
-      </div>
+const Topbar = () => (
+  <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-slate-200 bg-white/95 px-4 backdrop-blur sm:px-6">
+    <div className="hidden w-72 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 transition-colors focus-within:border-indigo-400 focus-within:bg-white sm:flex">
+      <Search size={15} className="shrink-0 text-slate-400" />
+      <input type="search" placeholder="Search care plan or support" className="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 outline-none" />
+      <span className="shrink-0 rounded border border-slate-200 px-1 text-[10px] text-slate-400">⌘K</span>
+    </div>
+    <div className="ml-auto flex items-center gap-1">
+      <div className="mr-2 hidden items-center gap-1.5 text-xs text-slate-500 md:flex"><ShieldCheck size={15} className="text-emerald-600" /><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" /><span>Private &amp; secure</span></div>
+      <button className="relative rounded-xl p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-800" title="Notifications"><Bell size={18} /><span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-rose-500" /></button>
+      <button className="rounded-xl p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-800" title="Help"><HelpCircle size={18} /></button>
+    </div>
+  </header>
+);
 
-      <div className="flex items-center gap-1 ml-auto">
-        {/* Last updated */}
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mr-3">
-          <span className="w-1.5 h-1.5 rounded-full bg-risk-low animate-pulse" />
-          <span>{lastUpdated}</span>
-        </div>
-
-      
-        <button className="relative p-2 rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors" title="Notifications">
-          <Bell size={16} />
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-accent" />
-        </button>
-        <button className="p-2 rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors" title="Help">
-          <HelpCircle size={16} />
-        </button>
-
-        
-      </div>
-    </header>
-
-  )
-}
-
-export default Topbar
+export default Topbar;
