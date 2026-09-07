@@ -2,7 +2,7 @@ import { Activity, Bell, CalendarDays, ClipboardCheck, LayoutDashboard, LogOut, 
 import { NavLink } from "react-router-dom";
 
 const menuItems = [
-  { name: "Dashboard", icon: LayoutDashboard, to: "/", end: true },
+  { name: "Dashboard", icon: LayoutDashboard, to: "/dashboard", end: true },
   { name: "My profile", icon: User, to: "/profile" },
   { name: "Check-ins", icon: ClipboardCheck },
   { name: "Wellbeing", icon: Activity },

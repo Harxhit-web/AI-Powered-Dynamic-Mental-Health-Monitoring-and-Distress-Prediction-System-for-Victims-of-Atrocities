@@ -2,6 +2,7 @@ import Topbar from "./components/Topbar";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
+import Signup from "./components/Signup";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -12,9 +13,11 @@ function App() {
         <Topbar />
         <main className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-8">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/" element={<Navigate to="/signup" replace />} />
+            <Route path="*" element={<Navigate to="/signup" replace />} />
           </Routes>
         </main>
       </div>
