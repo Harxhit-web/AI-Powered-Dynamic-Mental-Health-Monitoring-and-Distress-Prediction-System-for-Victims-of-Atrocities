@@ -1,13 +1,13 @@
 import { Bell, HelpCircle, Search, ShieldCheck } from "lucide-react";
 
-const Topbar = () => (
+const Topbar = ({ role = "victim" }) => (
   <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-slate-200 bg-white/95 px-4 backdrop-blur sm:px-6">
     
     <div className="hidden w-72 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 transition-colors focus-within:border-indigo-400 focus-within:bg-white sm:flex">
       
       <Search size={15} className="shrink-0 text-slate-400" />
       
-      <input type="search" placeholder="Search care plan or support" className="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 outline-none" />
+      <input type="search" placeholder={role === "counselor" ? "Search caseload or case ID" : "Search care plan or support"} className="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 outline-none" />
 
       <span className="shrink-0 rounded border border-slate-200 px-1 text-[10px] text-slate-400">⌘K</span>
 
