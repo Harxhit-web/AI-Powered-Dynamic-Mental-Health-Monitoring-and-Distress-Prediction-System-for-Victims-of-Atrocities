@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.db.db import get_db
 from app.models import Victim
+from app.utils.security import hash_password
 
 
 router = APIRouter(prefix="/victims", tags=["Victims"])
@@ -22,6 +23,7 @@ class VictimCreate(BaseModel):
     primary_language: str = Field(min_length=1, max_length=80)
     phone: str = Field(min_length=5, max_length=30)
     email: str = Field(min_length=3, max_length=255)
+    password: str = Field(min_length=8, max_length=256)
     contact_preference: str = Field(min_length=1, max_length=30)
     safe_contact_hours: str | None = Field(default=None, max_length=150)
     address: str = Field(min_length=1)
@@ -50,7 +52,8 @@ def create_victim(payload: VictimCreate, db: Session = Depends(get_db)):
         )
 
     victim = Victim(
-        **payload.model_dump(),
+        **payload.model_dump(exclude={"password"}),
+        password_hash=hash_password(payload.password),
         consented_at=datetime.now(timezone.utc),
     )
     try:

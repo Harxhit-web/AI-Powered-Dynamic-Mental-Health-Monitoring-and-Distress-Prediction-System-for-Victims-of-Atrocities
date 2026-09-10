@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.db.db import check_database_connection, create_database_tables
-from app.routes import admin, counselor, victim
+from app.routes import admin, auth, counselor, victim
 
 
 @asynccontextmanager
@@ -32,6 +32,7 @@ app.add_middleware(
 app.include_router(victim.router)
 app.include_router(counselor.router)
 app.include_router(admin.router)
+app.include_router(auth.router)
 
 
 @app.get("/")

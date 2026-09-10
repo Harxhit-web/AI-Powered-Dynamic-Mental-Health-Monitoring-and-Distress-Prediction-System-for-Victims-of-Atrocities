@@ -1,8 +1,6 @@
 """Restricted admin-account bootstrap route."""
 
-import hashlib
 import os
-import secrets
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
@@ -12,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.db.db import get_db
 from app.models import Admin
+from app.utils.security import hash_password
 
 
 router = APIRouter(prefix="/admins", tags=["Admins"])
@@ -27,14 +26,6 @@ class AdminCreate(BaseModel):
 class CreatedAdmin(BaseModel):
     id: UUID
     message: str
-
-
-def _hash_password(password: str) -> str:
-    salt = secrets.token_bytes(16)
-    password_hash = hashlib.scrypt(
-        password.encode("utf-8"), salt=salt, n=2**14, r=8, p=1
-    )
-    return f"{salt.hex()}${password_hash.hex()}"
 
 
 def _verify_setup_key(x_admin_setup_key: str | None = Header(default=None)) -> None:
@@ -60,7 +51,7 @@ def create_admin(
     admin = Admin(
         full_name=payload.full_name,
         email=payload.email,
-        password_hash=_hash_password(payload.password),
+        password_hash=hash_password(payload.password),
         is_superadmin=payload.is_superadmin,
     )
     try:

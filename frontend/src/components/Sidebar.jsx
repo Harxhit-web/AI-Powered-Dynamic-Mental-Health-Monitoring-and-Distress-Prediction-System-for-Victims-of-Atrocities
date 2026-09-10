@@ -1,5 +1,7 @@
 import { Activity, Bell, CalendarDays, ClipboardCheck, LayoutDashboard, LogOut, MessageSquare, Settings, User } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import api from "../services/api";
+import { getInitials, useAuth } from "../context/AuthContext";
 
 const menuItems = [
   { name: "Dashboard", icon: LayoutDashboard, to: "/dashboard", end: true },
@@ -23,10 +25,13 @@ const counselorMenuItems = [
 
 const itemStyle = (active) => `flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition ${active ? "bg-indigo-50 text-indigo-700" : "text-slate-600 hover:bg-slate-50 hover:text-indigo-600"}`;
 
-const Sidebar = ({ role = "victim" }) => {
+const Sidebar = ({ role = "victim", account }) => {
   const isCounselor = role === "counselor";
   const items = isCounselor ? counselorMenuItems : menuItems;
-  const profile = isCounselor ? { initials: "SK", name: "Dr. S. Kapoor", subtitle: "Counselor account", to: "/counselor/profile" } : { initials: "AM", name: "Aanya Mehta", subtitle: "Private care account", to: "/profile" };
+  const profile = { initials: getInitials(account?.full_name), name: account?.full_name || "Loading account…", subtitle: isCounselor ? "Counselor account" : "Private care account", to: isCounselor ? "/counselor/profile" : "/profile" };
+  const navigate = useNavigate();
+  const { refreshAccount } = useAuth();
+  const signOut = async () => { try { await api.post("/auth/logout"); } finally { await refreshAccount(); navigate("/login", { replace: true }); } };
 
   return <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-slate-200 bg-white lg:flex">
   <div className="flex h-20 items-center border-b border-slate-200 px-5"><div className="flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 font-bold text-white">MC</div><div><h1 className="font-bold text-slate-800">MindCare</h1><p className="text-xs text-slate-500">Care portal</p></div></div></div>
@@ -37,7 +42,7 @@ const Sidebar = ({ role = "victim" }) => {
       return item.to ? <NavLink key={item.name} to={item.to} end={item.end} className={({ isActive }) => itemStyle(isActive)}>{content}</NavLink> : <button key={item.name} className={itemStyle(false)}>{content}</button>;
     })}
   </nav>
-  <div className="space-y-2 px-3 pb-4"><button className={itemStyle(false)}><Settings size={20}/><span className="text-sm font-medium">Settings</span></button><button className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-rose-500 transition hover:bg-rose-50"><LogOut size={20}/><span className="text-sm font-medium">Sign out</span></button></div>
+  <div className="space-y-2 px-3 pb-4"><button className={itemStyle(false)}><Settings size={20}/><span className="text-sm font-medium">Settings</span></button><button onClick={signOut} className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-rose-500 transition hover:bg-rose-50"><LogOut size={20}/><span className="text-sm font-medium">Sign out</span></button></div>
   <NavLink to={profile.to} className="border-t border-slate-200 p-3 transition hover:bg-slate-50"><div className="flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-600">{profile.initials}</div><div className="min-w-0"><p className="truncate text-sm font-semibold text-slate-800">{profile.name}</p><p className="truncate text-xs text-slate-500">{profile.subtitle}</p></div></div></NavLink>
 </aside>;
 };

@@ -22,6 +22,7 @@ class Victim(Base):
 
     phone: Mapped[str] = mapped_column(String(30), nullable=False, unique=True)
     email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
+    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     contact_preference: Mapped[str] = mapped_column(String(30), nullable=False)
     safe_contact_hours: Mapped[str | None] = mapped_column(String(150))
 

@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.db.db import get_db
 from app.models import Counselor
+from app.utils.security import hash_password
 
 
 router = APIRouter(prefix="/counselors", tags=["Counselors"])
@@ -19,6 +20,7 @@ class CounselorCreate(BaseModel):
     professional_title: str = Field(min_length=1, max_length=150)
     work_email: str = Field(min_length=3, max_length=255)
     work_phone: str = Field(min_length=5, max_length=30)
+    password: str = Field(min_length=8, max_length=256)
     license_number: str = Field(min_length=1, max_length=120)
     issuing_body: str = Field(min_length=1, max_length=150)
     specialization: str = Field(min_length=1, max_length=200)
@@ -39,7 +41,10 @@ class CreatedCounselor(BaseModel):
 
 @router.post("", response_model=CreatedCounselor, status_code=status.HTTP_201_CREATED)
 def create_counselor(payload: CounselorCreate, db: Session = Depends(get_db)):
-    counselor = Counselor(**payload.model_dump())
+    counselor = Counselor(
+        **payload.model_dump(exclude={"password"}),
+        password_hash=hash_password(payload.password),
+    )
     try:
         db.add(counselor)
         db.commit()

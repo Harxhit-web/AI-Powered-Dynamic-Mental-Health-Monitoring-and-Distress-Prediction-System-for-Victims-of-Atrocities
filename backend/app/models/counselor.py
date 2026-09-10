@@ -22,6 +22,7 @@ class Counselor(Base):
     professional_title: Mapped[str] = mapped_column(String(150), nullable=False)
     work_email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
     work_phone: Mapped[str] = mapped_column(String(30), nullable=False)
+    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
     license_number: Mapped[str] = mapped_column(String(120), nullable=False, unique=True)
     issuing_body: Mapped[str] = mapped_column(String(150), nullable=False)

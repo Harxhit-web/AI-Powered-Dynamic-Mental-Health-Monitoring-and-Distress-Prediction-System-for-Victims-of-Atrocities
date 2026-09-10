@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { ArrowRight, CalendarDays, Check, Clock3, HeartPulse, Info, MessageCircle, MoreHorizontal, Phone, ShieldAlert, Sparkles, TrendingDown, TrendingUp } from "lucide-react";
+import { getInitials, useAuth } from "../context/AuthContext";
 
 const initialTasks = [
   { id: 1, title: "Complete daily check-in", description: "How are you feeling right now?", tag: "5 min", due: "Today", tone: "indigo", done: false },
@@ -30,18 +31,21 @@ function TrendChart() {
 const StatusBadge = ({ children, tone = "indigo" }) => <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${tone === "rose" ? "bg-rose-50 text-rose-700" : tone === "emerald" ? "bg-emerald-50 text-emerald-700" : "bg-indigo-50 text-indigo-700"}`}>{children}</span>;
 
 const Dashboard = () => {
+  const { account } = useAuth();
   const [tasks, setTasks] = useState(initialTasks);
   const [period, setPeriod] = useState("10 days");
   const [message, setMessage] = useState("");
   const completed = tasks.filter((task) => task.done).length;
   const completion = useMemo(() => Math.round((completed / tasks.length) * 100), [completed, tasks.length]);
   const toggleTask = (id) => setTasks((current) => current.map((task) => task.id === id ? { ...task, done: !task.done } : task));
+  const firstName = account?.full_name?.split(" ")[0] || "there";
+  const fullName = account?.full_name || "Your care profile";
 
   return <div className="space-y-6">
     <section className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
       <div>
         <p className="mb-1 text-sm font-medium text-indigo-600">Monday, 8 September</p>
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Good morning, Aanya</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Good morning, {firstName}</h2>
         <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">A gentle overview of your care plan, progress, and the next small steps you can take today.</p>
         </div>
       <button onClick={() => setMessage("Your care team has been notified that you’d like to talk.")} className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700">
@@ -88,10 +92,10 @@ const Dashboard = () => {
       <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex items-start justify-between"><div>
             <p className="text-sm font-medium text-slate-500">Care profile</p>
-            <h3 className="mt-1 text-lg font-bold text-slate-900">Aanya Mehta</h3>
+            <h3 className="mt-1 text-lg font-bold text-slate-900">{fullName}</h3>
             <p className="mt-1 text-sm text-slate-500">Member since May 2026</p>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-lg font-bold text-indigo-700">AM</div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-lg font-bold text-indigo-700">{getInitials(fullName)}</div>
             </div>
         <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-slate-100 pt-5 text-sm">
             <div>

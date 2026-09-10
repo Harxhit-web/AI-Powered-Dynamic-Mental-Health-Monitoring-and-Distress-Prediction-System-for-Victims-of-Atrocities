@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { AlertTriangle, ArrowRight, CalendarDays, ChevronRight, Clock3, HeartPulse, MoreHorizontal, Search, ShieldAlert, TrendingDown, TrendingUp, Users } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const people = [
   { id: "VM-2048", initials: "RK", name: "Riya K.", caseType: "Gender-based violence", detail: "Sexual assault survivor", risk: "High", score: 82, change: "+12", checkIn: "Today, 8:40 AM", appointment: "Today · 10:30 AM", mode: "Video", color: "rose" },
@@ -21,6 +22,7 @@ function RiskDistribution({ counts }) {
 }
 
 export default function Counselor() {
+  const { account } = useAuth();
   const [filter, setFilter] = useState("All");
   const [query, setQuery] = useState("");
   const [notice, setNotice] = useState("");
@@ -30,7 +32,7 @@ export default function Counselor() {
   const highRisk = people.filter((person) => person.risk === "High");
 
   return <div className="space-y-6">
-    <section className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"><div><p className="mb-1 text-sm font-semibold text-indigo-600">Monday, 8 September</p><h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Good morning, Dr. Kapoor</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">Here is a private, at-a-glance view of the people in your care and where attention may be needed today.</p></div><button onClick={() => setNotice("A secure appointment-link invitation has been prepared.")} className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700"><CalendarDays size={17} /> Schedule appointment</button></section>
+    <section className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"><div><p className="mb-1 text-sm font-semibold text-indigo-600">Monday, 8 September</p><h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Good morning, {account?.full_name || "there"}</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">Here is a private, at-a-glance view of the people in your care and where attention may be needed today.</p></div><button onClick={() => setNotice("A secure appointment-link invitation has been prepared.")} className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700"><CalendarDays size={17} /> Schedule appointment</button></section>
     {notice && <div className="flex items-center justify-between rounded-xl border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm text-indigo-800"><span>{notice}</span><button onClick={() => setNotice("")} className="font-bold" aria-label="Dismiss notice">×</button></div>}
 
     <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

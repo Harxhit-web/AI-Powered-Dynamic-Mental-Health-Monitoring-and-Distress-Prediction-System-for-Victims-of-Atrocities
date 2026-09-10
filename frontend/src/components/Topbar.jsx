@@ -1,6 +1,6 @@
 import { Bell, HelpCircle, Search, ShieldCheck } from "lucide-react";
 
-const Topbar = ({ role = "victim" }) => (
+const Topbar = ({ role = "victim", account }) => (
   <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-slate-200 bg-white/95 px-4 backdrop-blur sm:px-6">
     
     <div className="hidden w-72 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 transition-colors focus-within:border-indigo-400 focus-within:bg-white sm:flex">
@@ -13,6 +13,7 @@ const Topbar = ({ role = "victim" }) => (
 
     </div>
     <div className="ml-auto flex items-center gap-1">
+      <p className="mr-2 hidden text-sm font-semibold text-slate-700 lg:block">{account?.full_name}</p>
       <div className="mr-2 hidden items-center gap-1.5 text-xs text-slate-500 md:flex">
         
         <ShieldCheck size={15} className="text-emerald-600" /><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
